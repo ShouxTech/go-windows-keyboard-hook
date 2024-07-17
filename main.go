@@ -106,6 +106,7 @@ func start() {
 		}
 		return CallNextHookEx(keyboardHook, nCode, wParam, lParam)
 	}, 0, 0)
+	defer UnhookWindowsHookEx(keyboardHook)
 
 	// Message loop required in order for hook callback to work.
 	// There's also strange slow system-wide typing behavior if you remove the message loop.
@@ -114,8 +115,6 @@ func start() {
 		TranslateMessage(&msg)
 		DispatchMessage(&msg)
 	}
-
-	UnhookWindowsHookEx(keyboardHook)
 }
 
 func main() {
